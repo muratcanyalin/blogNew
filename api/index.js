@@ -5,7 +5,7 @@ const User = require('./models/User');
 const bcrypt = require('bcryptjs');
 const app = express();
 const jwt = require('jsonwebtoken');
-const cookieParser = require('cookieParser');
+const cookieParser = require('cookie-parser');
 
 const salt = bcrypt.genSaltSync(10);
 const secret = 'ASDOFWOEIF3443NOFG43';
@@ -40,8 +40,7 @@ app.post('/login', async (req, res) => {
             if (err) throw err;
             res.cookie('token', token).json('ok');
 
-        });
-        //res.json();
+        }); 
     }
     else {
         res.status(400).json('wrong credentials');
@@ -54,8 +53,11 @@ app.get('/profile', (req, res) => {
         if (err) throw err;
         res.json(info);
     });
-    res.json(req.cookies);
 });
+
+app.post('/logout', (req,res) => {
+    res.cookie('token', '').json('ok');
+})
 
 app.listen(4000);
 //  
